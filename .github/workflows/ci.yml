@@ -5,7 +5,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-        components: clippy, rustfmt
+        with:
+          components: clippy, rustfmt
       - uses: actions/cache@v4
         with:
           path: |
