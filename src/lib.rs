@@ -1,7 +1,7 @@
 //! Helpers for working with closures that don’t capture any variables.
 //!
 //! The [`fn_item!`](crate::fn_item) macro makes a closure with no captures,
-//! and can be accepted into functions with [`ImplFnItem!`](crate::ImplFnItem).
+//! and can be accepted into functions with [`ImplFnItem!`].
 //!
 //! This is useful for dealing with function pointers in a more composable way.
 //!
@@ -94,7 +94,22 @@ macro_rules! fn_item {
 ///
 /// This is a tuple whose first element is the [`FnItem`] itself.
 ///
-/// See [the crate root](crate) for examples.
+/// Note that explicit HRTBs (i.e. `for<…>`) will always be required
+/// even in cases where the equivalent `Fn` would allow them to be elided.
+///
+/// # Examples
+///
+/// ```
+/// fn make_fn_ptr<F>(_: ImplFnItem![F: for<'a> Fn(&'a str) -> u32]) -> fn(&str) -> u32
+/// where
+///     F: for<'a> FnItem<(&'a str,), u32>
+/// {
+///     |s| F::call((s,))
+/// }
+///
+/// use fn_item::FnItem;
+/// use fn_item::ImplFnItem;
+/// ```
 #[macro_export]
 macro_rules! ImplFnItem {
     (
@@ -103,16 +118,14 @@ macro_rules! ImplFnItem {
         Fn($($T:ty),* $(,)?) $(-> $R:ty)?
         $(,)?
     ) => {
-        (
+        $crate::ImplFnItem<
             $F,
-            ::core::marker::PhantomData<
-                $(for<$(#[allow(single_use_lifetimes)] $l,)*>)? fn($($T,)*) $(-> $R)?,
-            >,
+            $(for<$(#[allow(single_use_lifetimes)] $l,)*>)? fn($($T,)*) $(-> $R)?,
             impl ::core::marker::Send
                 + ::core::marker::Sync
                 + ::core::marker::Copy
                 + $(for<$($l,)*>)? Fn($($T,)*) $(-> $R)?,
-        )
+        >
     };
 
     (
@@ -140,6 +153,13 @@ mod private {
     use core::marker::PhantomData;
 }
 use private::IsFnItem;
+
+/// To pass one of these to a function, use the [`fn_item!`] macro.
+///
+/// This exists for documentation purposes only –
+/// use the [`ImplFnItem!`] macro instead
+/// when accepting a [`fn_item!`].
+pub type ImplFnItem<FI, P, F> = (FI, PhantomData<P>, F);
 
 /// Not public API. Used by the [`fn_item!`] macro.
 #[doc(hidden)]
@@ -249,3 +269,4 @@ mod tests {
 use core::fmt;
 use core::fmt::Debug;
 use core::hash::Hash;
+use core::marker::PhantomData;

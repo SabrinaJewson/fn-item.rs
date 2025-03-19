@@ -5,7 +5,7 @@
 Helpers for working with closures that don’t capture any variables.
 
 The [`fn_item!`](https://docs.rs/fn-item/latest/fn_item/macro.fn_item.html) macro makes a closure with no captures,
-and can be accepted into functions with [`ImplFnItem!`](https://docs.rs/fn-item/latest/fn_item/macro.ImplFnItem.html).
+and can be accepted into functions with [`ImplFnItem!`].
 
 This is useful for dealing with function pointers in a more composable way.
 
@@ -44,3 +44,5 @@ fn make_fn_ptr((f, ..): ImplFnItem![for<'a> Fn(&'a str) -> u32]) -> fn(&str) -> 
 ## License
 
 MIT.
+
+[`ImplFnItem!`]: https://docs.rs/fn-item/latest/fn_item/macro.ImplFnItem.html
