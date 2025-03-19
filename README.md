@@ -4,8 +4,8 @@
 
 Helpers for working with closures that don’t capture any variables.
 
-The [`fn_item!`] macro makes a closure with no captures,
-and can be accepted into functions with [`ImplFnItem!`].
+The [`fn_item!`](https://docs.rs/fn-item/latest/fn_item/macro.fn_item.html) macro makes a closure with no captures,
+and can be accepted into functions with [`ImplFnItem!`](https://docs.rs/fn-item/latest/fn_item/macro.ImplFnItem.html).
 
 This is useful for dealing with function pointers in a more composable way.
 
