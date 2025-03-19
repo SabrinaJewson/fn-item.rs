@@ -1,0 +1,12 @@
+[package]
+name = "fn-item"
+version = "0.1.0"
+edition = "2021"
+description = "Helpers for working with closures that don’t capture any variables."
+repository = "https://github.com/SabrinaJewson/fn-item.rs"
+license = "MIT"
+keywords = ["ZST", "function", "FnItem", "FnStatic"]
+categories = ["no-std::no-alloc"]
+rust-version = "1.85.0"
+
+[dependencies]
