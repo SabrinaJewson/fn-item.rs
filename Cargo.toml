@@ -1,6 +1,6 @@
 [package]
 name = "fn-item"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Helpers for working with closures that don’t capture any variables."
 repository = "https://github.com/SabrinaJewson/fn-item.rs"
